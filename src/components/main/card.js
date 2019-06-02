@@ -1,15 +1,16 @@
 import React from 'react';
 import {  Icon } from 'antd-mobile';
-const card = () => {
+const card = (props) => {
+    const {name,goodsImg,isAttention,price,attentionPrice} = props.data
     return(
         <div className="cards">
             <div className="cardsImg">
-                <img src="https://zos.alipayobjects.com/rmsportal/TrdkqxQcrAUcmYelQUNK.png" alt="图片"/>
+                <img src={goodsImg} alt={name}/>
             </div>
             <div className="cardsInfo">
-                <p>sssssssssssssssss</p>
+                <p>{name}</p>
                 <div>
-                    <span>%;lkkjl</span>
+                    <span>￥{price}</span>
                     <Icon type="check" />
                 </div>
             </div>

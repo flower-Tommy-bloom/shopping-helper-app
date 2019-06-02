@@ -1,6 +1,6 @@
 import {request} from './request'
 
-export const search = (params) => {
+export const findGoods = (params) => {
     return request({
         url:'searchgoods',
         params

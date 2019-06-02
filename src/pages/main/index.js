@@ -1,30 +1,69 @@
 import React, { Component } from 'react';
 import { Tabs, Badge, SearchBar, Accordion, List, Icon } from 'antd-mobile';
-import { search, attentionGoods } from './../../api/goods'
+import { findGoods, attentionGoods } from './../../api/goods'
 import { TabContent } from './../../components/main'
 import { isArray } from './../../util/tool'
 import './../../assets/css/index.scss'
 const tabs = [
-    { a:123,title: <Badge>搜索</Badge> },
-    { a:1234,title: <Badge text={'今日(20)'}>收藏</Badge> },
-    { a:12345,title: <Badge dot>足迹</Badge> },
+    { type: 'id', title: <Badge>搜索</Badge> },
+    { type: 'isAttention', title: <Badge text={'今日(20)'}>收藏</Badge> },
+    { type: 'spoor', title: <Badge dot>足迹</Badge> },
 ];
+let dataList = {
+    id: [],
+    isAttention: [],
+    spoor: [],
+}
+let idLoading = {
+    id:true,
+    isAttention:false,
+    spoor:false
+}
 class tabBar extends React.Component {
     constructor(porps) {
         super(porps)
         this.state = {
-            list:[
-                {a:1},
-                {a:2},
-                {a:3},
-            ]
+            type: '',
+            condition: '',
+            
         }
+    }
+    findGoods = () => {
+        console.log(this.state,22)
+        findGoods({
+            type: this.state.type,
+            param: this.state.condition
+        }).then(res => {
+            let flag = isArray(res.data)
+            if(flag){
+                res.data.map(v => {
+                    dataList[this.state.type].unshift(v)
+                    console.log(dataList[this.state.type],2)
+                })
+            }else{
+                dataList[this.state.type].unshift(res.data)
+            }
+        })
     }
     Accordion = (key) => {
         console.log(key);
     }
     search = (val) => {
-        search({ goodsId: val }).then(res => console.log(res, 111))
+        this.setState({
+            type: 'id',
+            condition: val
+        }, () => this.findGoods())
+    }
+    changeTab = (tab, index) => {
+        console.log(tab,1)
+        if(!idLoading[tab.type]){
+            idLoading[tab.type] = true
+            this.setState({
+                type: tab.type
+            }, () => {
+                this.findGoods()
+            })
+        }
     }
     render() {
         return (
@@ -39,14 +78,13 @@ class tabBar extends React.Component {
                             </List>
                         </Accordion.Panel>
                     </Accordion>
-                    <SearchBar className="search" placeholder="Search" maxLength={8} onSubmit={value => this.search(value)} />
+                    <SearchBar className="search" defaultValue="7629508" placeholder="7629508" maxLength={8} onSubmit={value => this.search(value)} />
                 </div>
                 <Tabs tabs={tabs}
-                    initialPage={1}
-                    onChange={(tab, index) => { console.log('onChange', index, tab); }}
-                    onTabClick={(tab, index) => { console.log('onTabClick', index, tab); }}
+                    initialPage={0}
+                    onChange={(tab, index) => { this.changeTab(tab, index) }}
                 >
-                    {tabs.map((v,index) => <TabContent key={index} data={this.state.list[index]} />)}
+                    {tabs.map((v, index) => <TabContent key={index} data={dataList[v.type]} />)}
                 </Tabs>
             </div>
         )
