@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './../../assets/css/user/login.scss'
 import { InputItem, Button } from 'antd-mobile';
 import { login } from '../../api/user'

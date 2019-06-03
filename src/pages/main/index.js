@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Tabs, Badge, SearchBar, Accordion, List, Icon } from 'antd-mobile';
-import { findGoods, attentionGoods } from './../../api/goods'
+import { findGoods } from './../../api/goods'
 import { TabContent } from './../../components/main'
 import { isArray } from './../../util/tool'
 import './../../assets/css/index.scss'
@@ -12,7 +12,7 @@ const tabs = [
 let dataList = {
     id: [],
     isAttention: [],
-    spoor: [],
+    spoor: []
 }
 let idLoading = {
     id:true,
