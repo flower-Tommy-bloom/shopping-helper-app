@@ -43,6 +43,11 @@
         align-items: center;
         p{
             width: 70%;
+            height: 100%;
+            padding: 10px 0;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
             overflow: hidden;
         }
         div{

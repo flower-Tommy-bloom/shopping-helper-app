@@ -1,53 +1,37 @@
 import React from 'react';
 import { List, Switch } from 'antd-mobile';
-import { attentionGoods } from './../../api/goods'
 import AddAttention from './addAttention'
-const card = (props) => {
-  let { id, name, goodsImg, isAttention, price, attentionPrice } = props.data
-  const changeisAttention = (val) => {
-    console.log(val);
-    // isAttention = !val
-    // attentionGoods(id)
-  }
-  return (
-    <div className="cards">
-      <div className="cardsImg">
-        <img src={goodsImg} alt={name} />
-      </div>
-      <div className="cardsInfo">
-        <p>{name}</p>
-        <div>
-          <span>￥{price}</span>
-          <List.Item
-            extra={<Switch
-              checked={isAttention}
-              onChange={(val) => changeisAttention(val)}
-            />}
-          ></List.Item>
-        </div>
-      </div>
-    </div>
-  )
-}
+import { attentionGoods } from '../../api/goods'
 class Cards extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       isAttention: this.props.data.isAttention,
-      attentionModel:false
+      attentionModel: false
     }
   }
+
   changeisAttention = (val) => {
     if (val) {
       this.setState({
-        attentionModel:val
+        attentionModel: val
+      })
+    } else {
+      attentionGoods({
+        id: this.props.data.id,
+        isAttention: val
+      }).then(res => {
+        this.setState({
+          isAttention: false
+        })
       })
     }
   }
+
   attentionBackInfo = (attentionInfo) => {
     this.setState({
-      attentionModel:attentionInfo.attentionModel,
-      isAttention:attentionInfo.isAttention
+      attentionModel: attentionInfo.attentionModel,
+      isAttention: attentionInfo.isAttention
     })
   }
 
@@ -70,7 +54,7 @@ class Cards extends React.Component {
             ></List.Item>
           </div>
         </div>
-        <AddAttention attentionModel={this.state.attentionModel} attentionBackInfo={this.attentionBackInfo}  />
+        <AddAttention price={price} id={id} attentionPrice={attentionPrice} attentionModel={this.state.attentionModel} attentionBackInfo={this.attentionBackInfo} />
       </div>
     )
   }

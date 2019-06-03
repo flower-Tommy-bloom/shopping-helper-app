@@ -12,9 +12,10 @@ const tabs = [
 let dataList = {
     id: [],
     isAttention: [],
-    spoor: []
+    spoor: [],
+    test:[]
 }
-let idLoading = {
+let idLoadinged = {
     id:true,
     isAttention:false,
     spoor:false
@@ -25,21 +26,22 @@ class tabBar extends React.Component {
         this.state = {
             type: '',
             condition: '',
-            
         }
     }
     findGoods = () => {
-        console.log(this.state,22)
         findGoods({
             type: this.state.type,
             param: this.state.condition
         }).then(res => {
             let flag = isArray(res.data)
             if(flag){
-                res.data.map(v => {
-                    dataList[this.state.type].unshift(v)
-                    console.log(dataList[this.state.type],2)
-                })
+                if(this.state.type === 'id'){
+                    dataList[this.state.type][0] = res.data[0]
+                }else{
+                    res.data.forEach(v => {
+                        dataList[this.state.type].unshift(v)
+                    })
+                }
             }else{
                 dataList[this.state.type].unshift(res.data)
             }
@@ -55,9 +57,8 @@ class tabBar extends React.Component {
         }, () => this.findGoods())
     }
     changeTab = (tab, index) => {
-        console.log(tab,1)
-        if(!idLoading[tab.type]){
-            idLoading[tab.type] = true
+        if(!idLoadinged[tab.type]){
+            idLoadinged[tab.type] = true
             this.setState({
                 type: tab.type
             }, () => {
@@ -91,98 +92,3 @@ class tabBar extends React.Component {
     }
 }
 export default tabBar
-// const Search = Input.Search;
-// class Mainpage extends Component {
-//     constructor() {
-//         super()
-//         this.state = {
-//             id:7629508,
-//             inputVal: 7629508,
-//             isAttention:false,
-//             openModel:false,
-//             name: '',
-//             price: 0,
-//             img: '',
-//         }
-//     }
-//     componentDidMount() {
-//         this.checkGoodsa()
-//     }
-
-//     search = async (val) => {
-//         this.setState({
-//             inputVal: val,
-//             id:val
-//         }, () => {
-//             this.checkGoodsa()
-//         })
-//     }
-
-//     checkGoodsa = async () => {
-//         const res = await getGoodsInfo({ goodsId: this.state.inputVal })
-//         const flag = isArray(res.data)
-//         let goodsDetail = flag ? res.data[0] : res.data
-//         console.log(goodsDetail)
-//         const { name, price, goodsImg, isAttention } = goodsDetail
-//         this.setState({
-//             name: name,
-//             price: price,
-//             goodsImg: goodsImg,
-//             isAttention:isAttention || false
-//         })
-//     }
-
-//     addGoods = async (val) => {
-//         if(val){
-//             this.setState({
-//                 openModel:val,
-//             })
-//         }else{
-//             attentionGoods({
-//                 id:this.state.id,
-//                 isAttention:false
-//             })
-//             this.setState({
-//                 isAttention:val,
-//             })
-//         }
-//     }
-
-//     attentionStatus = (val) => {
-//         console.log('son say',val)
-//         this.setState({
-//             isAttention:val.flag,
-//             openModel:val.openModel
-//         })
-//     }
-
-//     render() {
-//         return (
-//             <div className="main">
-//                 <Row type='flex' justify="center" align="middle">
-//                     <Col className="mb20" span={20}>
-//                         <Search
-//                             placeholder="input search text"
-//                             onSearch={value => this.search(value)}
-//                             defaultValue={this.state.inputVal}
-//                             enterButton />
-//                     </Col>
-//                 </Row>
-//                 <Row type='flex' justify="center" align="middle">
-//                     <Col span={20}>
-//                         <Card
-//                             className="main_card"
-//                         >
-//                             <img className="main_goodsImg mb10" alt="example" src={this.state.goodsImg} />
-//                             <span className="mr15">{this.state.name}</span>
-//                             <span className="main_price mr10">￥{this.state.price}</span>
-//                             <Switch checked={this.state.isAttention} defaultChecked onChange={val => this.addGoods(val)} />
-//                         </Card>
-//                     </Col>
-//                 </Row>
-//                 <AddGoods getBackInfo={this.attentionStatus} id={this.state.id} openModel={this.state.openModel} price={this.state.price}/>
-//             </div>
-//         )
-//     }
-// }
-// export default Mainpage
