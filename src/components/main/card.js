@@ -6,7 +6,7 @@ class Cards extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      isAttention: this.props.data.isAttention,
+      isAttention: this.props.data.isAttention || false,
       attentionModel: false
     }
   }
@@ -36,7 +36,7 @@ class Cards extends React.Component {
   }
 
   render() {
-    let { id, name, goodsImg, price, attentionPrice } = this.props.data
+    let { goodsId, name, goodsImg, price, attentionPrice } = this.props.data
     return (
       <div className="cards">
         <div className="cardsImg">
@@ -54,7 +54,7 @@ class Cards extends React.Component {
             ></List.Item>
           </div>
         </div>
-        <AddAttention price={price} id={id} attentionPrice={attentionPrice} attentionModel={this.state.attentionModel} attentionBackInfo={this.attentionBackInfo} />
+        <AddAttention price={price} goodsId={goodsId} attentionPrice={attentionPrice} attentionModel={this.state.attentionModel} attentionBackInfo={this.attentionBackInfo} />
       </div>
     )
   }

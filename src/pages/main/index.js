@@ -5,18 +5,18 @@ import { TabContent } from './../../components/main'
 import { isArray } from './../../util/tool'
 import './../../assets/css/index.scss'
 const tabs = [
-    { type: 'id', title: <Badge>搜索</Badge> },
+    { type: 'goodsId', title: <Badge>搜索</Badge> },
     { type: 'isAttention', title: <Badge text={'今日(20)'}>收藏</Badge> },
     { type: 'spoor', title: <Badge dot>足迹</Badge> },
 ];
 let dataList = {
-    id: [],
+    goodsId: [],
     isAttention: [],
     spoor: [],
     test:[]
 }
-let idLoadinged = {
-    id:true,
+let isLoadinged = {
+    goodsId:true,
     isAttention:false,
     spoor:false
 }
@@ -35,7 +35,7 @@ class tabBar extends React.Component {
         }).then(res => {
             let flag = isArray(res.data)
             if(flag){
-                if(this.state.type === 'id'){
+                if(this.state.type === 'goodsId'){
                     dataList[this.state.type][0] = res.data[0]
                 }else{
                     res.data.forEach(v => {
@@ -52,13 +52,13 @@ class tabBar extends React.Component {
     }
     search = (val) => {
         this.setState({
-            type: 'id',
+            type: 'goodsId',
             condition: val
         }, () => this.findGoods())
     }
     changeTab = (tab, index) => {
-        if(!idLoadinged[tab.type]){
-            idLoadinged[tab.type] = true
+        if(!isLoadinged[tab.type]){
+            isLoadinged[tab.type] = true
             this.setState({
                 type: tab.type
             }, () => {
@@ -79,7 +79,7 @@ class tabBar extends React.Component {
                             </List>
                         </Accordion.Panel>
                     </Accordion>
-                    <SearchBar className="search" defaultValue="7629508" placeholder="7629508" maxLength={8} onSubmit={value => this.search(value)} />
+                    <SearchBar className="search" defaultValue="7629508" placeholder="7629508" maxLength={30} onSubmit={value => this.search(value)} />
                 </div>
                 <Tabs tabs={tabs}
                     initialPage={0}
